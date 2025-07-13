@@ -1,46 +1,101 @@
-import md5 from "md5";
-
-const apiPRIVATEKEY=import.meta.env.VITE_PRIVATE_KEY;
-const apiPUBLICKEY=import.meta.env.VITE_PUBLIC_KEY;
-const timeStamp=Date.now();
-const hs=md5(timeStamp+apiPRIVATEKEY+apiPUBLICKEY);
+const characterContainer=document.getElementById("character-container");
+const AccessToken=import.meta.env.VITE_ACCESS_TOKEN;
 
 const input=document.getElementById("input").textContent;
 const submit=document.getElementById("submit");
 const randomButton=document.getElementById("randomButton");
 
-const tempHeros=["Spider-Man (2099)","Blue Marvel","Hulk"];
+const tempHeros=[
+  {name:"Spider-Man",ID:620},
+  {name:"Blue Beetle III",ID:126},
+  {name:"Hulk",ID:332},
+  {name:"Ironman",ID:732},
+  {name:"Deadpool",ID:213},
+  {name:"Black Panther",ID:106},
+  {name:"Wolverine",ID:717},
+  {name:"Captain America",ID:149},
+]
 
+// randomButton.addEventListener("click",()=>{
+//     randomHero();
+// })
 
-randomButton.addEventListener("click",()=>{
-    randomHero();
-})
-
-
-async function fetchData(hero) {
+async function fetchDataID(heroID) {
   try {
-    const response=await fetch(`https://gateway.marvel.com:443/v1/public/characters?name=${hero}&ts=${timeStamp}&apikey=${apiPUBLICKEY}&hash=${hs}`);
+    const response=await fetch(`https://superheroapi.com/api.php/${AccessToken}/${heroID}`)
     if(!response.ok){
       throw new Error("Could not fetch data")
     }
     const rawData=await response.json();
-    console.log(rawData.data["results"]);
-    
-    
+    return rawData;
+
   } catch (error) {
     console.error(error);
   }
+}
+
+// function randomHero(){
+
+
+// }
+
+
+
+tempHeros.forEach(async (hero)=>{
   
-}
-
-function randomHero(){
-
-
-}
-
-tempHeros.forEach((hero)=>{
-fetchData(hero);
-})
+  const tempHero=await fetchDataID(hero.ID);
+  console.log(tempHero);
+  console.log(tempHero.powerstats.combat);
+  
+  const profileContainer=document.createElement("div");
+  const img=document.createElement("img");
+  const h2Name=document.createElement("h2");
+  const divList=document.createElement("div");
 
 
-// fetchData();
+  const combatStat=document.createElement("p")
+  const durabilityStat=document.createElement("p")
+  const intelligenceStat=document.createElement("p")
+  const powerStat=document.createElement("p")
+  const speedStat=document.createElement("p")
+  const strengthStat=document.createElement("p")
+  
+
+  h2Name.textContent=hero.name;
+  img.src=`${tempHero.image.url}`;
+  combatStat.textContent="Combat: "+tempHero.powerstats.combat;
+  durabilityStat.textContent="Durability: "+tempHero.powerstats.durability;
+  intelligenceStat.textContent="Intelligence: "+tempHero.powerstats.intelligence;
+  powerStat.textContent="Power: "+tempHero.powerstats.power;
+  speedStat.textContent="Speed: "+tempHero.powerstats.speed;
+  strengthStat.textContent="Strength: "+tempHero.powerstats.strength;
+
+
+  profileContainer.classList.add("profile-container");
+  img.classList.add("profile-container-img");
+  h2Name.classList.add("profile-container-h2");
+  divList.classList.add("profile-list");
+ 
+  combatStat.classList.add("profile-list-p");
+  durabilityStat.classList.add("profile-list-p");
+  intelligenceStat.classList.add("profile-list-p");
+  powerStat.classList.add("profile-list-p");
+  speedStat.classList.add("profile-list-p");
+  strengthStat.classList.add("profile-list-p");
+
+  profileContainer.appendChild(img);
+  profileContainer.appendChild(h2Name);
+
+  divList.appendChild(combatStat);
+  divList.appendChild(durabilityStat);
+  divList.appendChild(intelligenceStat);
+  divList.appendChild(powerStat);
+  divList.appendChild(speedStat);
+  divList.appendChild(strengthStat);
+
+  profileContainer.appendChild(divList);
+
+  characterContainer.appendChild(profileContainer);
+});
+
+//  fetchData();
