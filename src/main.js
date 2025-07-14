@@ -3,7 +3,7 @@ const AccessToken=import.meta.env.VITE_ACCESS_TOKEN;
 
 const input=document.getElementById("input");
 const submit=document.getElementById("submit");
-const randomButton=document.getElementById("randomButton");
+const randomButton=document.getElementById("randomBTN");
 
 const tempHeros=[
   {name:"Spider-Man",ID:620},
@@ -16,9 +16,13 @@ const tempHeros=[
   {name:"Captain America",ID:149},
 ]
 
-// randomButton.addEventListener("click",()=>{
-//     randomHero();
-// })
+randomButton.addEventListener("click",async ()=>{
+    const randomNumber=Math.floor(Math.random()*731)+1;
+    characterContainer.innerHTML = "";
+
+    const tempHero =await fetchDataID(randomNumber);
+    displayCard(tempHero);
+});
 
 input.addEventListener("input",async e=>{
 
