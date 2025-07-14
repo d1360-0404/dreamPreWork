@@ -1,7 +1,7 @@
 const characterContainer=document.getElementById("character-container");
 const AccessToken=import.meta.env.VITE_ACCESS_TOKEN;
 
-const input=document.getElementById("input").textContent;
+const input=document.getElementById("input");
 const submit=document.getElementById("submit");
 const randomButton=document.getElementById("randomButton");
 
@@ -20,6 +20,48 @@ const tempHeros=[
 //     randomHero();
 // })
 
+input.addEventListener("input",async e=>{
+
+  characterContainer.innerHTML = "";
+  const value=e.target.value.toLowerCase();
+
+  if(value.length===0){
+    showTempHeros();
+  } 
+  if (value === "") return;
+
+  const characters=await fetchDataName(value);
+  characters.results.forEach(element => {
+    if(element.name.toLowerCase().startsWith(value)){
+      displayCard(element);
+    }
+  });
+
+});
+
+function showTempHeros(){
+  tempHeros.forEach(async (hero)=>{
+    const tempHero=await fetchDataID(hero.ID);
+    displayCard(tempHero);
+  
+  });
+}
+
+async function fetchDataName(name) {
+  try {
+    const response=await fetch(`https://superheroapi.com/api.php/${AccessToken}/search/${name}`)
+    if(!response.ok){
+      throw new Error("Could not fetch data")
+    }
+    const rawData=await response.json();
+    return rawData;
+
+  } catch (error) {
+    console.error(error);
+  }
+  
+}
+
 async function fetchDataID(heroID) {
   try {
     const response=await fetch(`https://superheroapi.com/api.php/${AccessToken}/${heroID}`)
@@ -34,24 +76,11 @@ async function fetchDataID(heroID) {
   }
 }
 
-// function randomHero(){
-
-
-// }
-
-
-
-tempHeros.forEach(async (hero)=>{
-  
-  const tempHero=await fetchDataID(hero.ID);
-  console.log(tempHero);
-  console.log(tempHero.powerstats.combat);
-  
+function displayCard(tempHero){
   const profileContainer=document.createElement("div");
   const img=document.createElement("img");
   const h2Name=document.createElement("h2");
   const divList=document.createElement("div");
-
 
   const combatStat=document.createElement("p")
   const durabilityStat=document.createElement("p")
@@ -60,16 +89,17 @@ tempHeros.forEach(async (hero)=>{
   const speedStat=document.createElement("p")
   const strengthStat=document.createElement("p")
   
-
-  h2Name.textContent=hero.name;
+  h2Name.textContent=tempHero.name;
+  //come back to this 
+  // when loading url if the image cant be found it returns a 404 error 
   img.src=`${tempHero.image.url}`;
+
   combatStat.textContent="Combat: "+tempHero.powerstats.combat;
   durabilityStat.textContent="Durability: "+tempHero.powerstats.durability;
   intelligenceStat.textContent="Intelligence: "+tempHero.powerstats.intelligence;
   powerStat.textContent="Power: "+tempHero.powerstats.power;
   speedStat.textContent="Speed: "+tempHero.powerstats.speed;
   strengthStat.textContent="Strength: "+tempHero.powerstats.strength;
-
 
   profileContainer.classList.add("profile-container");
   img.classList.add("profile-container-img");
@@ -96,6 +126,9 @@ tempHeros.forEach(async (hero)=>{
   profileContainer.appendChild(divList);
 
   characterContainer.appendChild(profileContainer);
-});
+}
+
+
+showTempHeros();
 
 //  fetchData();
