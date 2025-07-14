@@ -46,10 +46,10 @@ header{
   padding: 0;
 }
 #submitBTN:hover{
-  background-color:#C21807;
+  color:#C21807;
 }
 #randomBTN:hover{
-  background-color:#FFD700;
+  color:#FFD700;
 }
 
 body{
