@@ -81,7 +81,10 @@ async function fetchDataID(heroID) {
 }
 
 function displayCard(tempHero){
+  
   const profileContainer=document.createElement("div");
+  profileContainer.dataset.id = tempHero.id;
+
   const img=document.createElement("img");
   const h2Name=document.createElement("h2");
   const divList=document.createElement("div");
@@ -132,7 +135,11 @@ function displayCard(tempHero){
   characterContainer.appendChild(profileContainer);
 }
 
-
 showTempHeros();
 
-//  fetchData();
+document.getElementById("character-container").addEventListener("click", (e) => {
+  const card = e.target.closest(".profile-container");
+  if (card) {
+    console.log(card.dataset.id);
+  }
+});

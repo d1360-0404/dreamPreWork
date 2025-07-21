@@ -67,7 +67,9 @@ body{
   gap: 20px;
   flex-wrap: wrap;
   min-height: 100%;
+
 }
+
 
 .profile-container{
   height: 450px;
@@ -81,7 +83,11 @@ body{
   align-content:start;
   text-align: center;
   flex-shrink: 0;
+  cursor: pointer;
 
+}
+.profile-container:hover{
+  border-color: white;
 }
 .profile-container-img{
   width: 240px;
