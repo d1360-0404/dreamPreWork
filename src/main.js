@@ -1,3 +1,4 @@
+
 const characterContainer=document.getElementById("character-container");
 const AccessToken=import.meta.env.VITE_ACCESS_TOKEN;
 
@@ -140,6 +141,10 @@ showTempHeros();
 document.getElementById("character-container").addEventListener("click", (e) => {
   const card = e.target.closest(".profile-container");
   if (card) {
-    console.log(card.dataset.id);
+    window.location.href = `character-page.html?id=${card.dataset.id}`;
   }
 });
+
+async function displayCharacter(heroID){
+ chosenHero=await fetchDataID(heroID);
+}
