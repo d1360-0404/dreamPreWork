@@ -1,3 +1,3 @@
 # Dream prework 
-need to come back and do a better read me 
-you can visit site here meanwhile https://dreamprework.onrender.com
+You can visit site here https://dreamprework.onrender.com
+The api that I used was https://superheroapi.com/ 
