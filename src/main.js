@@ -55,7 +55,7 @@ showTempHeros();
 document.getElementById("character-container").addEventListener("click", (e) => {
   const card = e.target.closest(".profile-container");
   if (card) {
-    window.location.href = `character-page.html?id=${card.dataset.id}`;
+    window.location.href = `/character-page.html?id=${card.dataset.id}`;
   }
 });
 
